@@ -18,13 +18,19 @@ const path = require('path');
 
     // Obtener todas las tablas de cada enlace y combinarlas en un solo array
     const results = [];
+    let count = 0;
+    console.log(`Found ${links.length} links to process...`);
     for (const link of links) {
+        console.log(`Processed ${count}/${links.length} links...`);
         try {
             const table = await getTableFromHref(link.href);
             // Para cada fila de la tabla, agrega href y texto al inicio
             for (const row of table) {
                 results.push([link.href, link.text, ...row]);
+                console.log(`Processed row: ${row.join(', ')}`);
             }
+            count++;
+
         } catch (err) {
             // Si hay error, igual agrega el href y texto, pero deja columnas vacías
             results.push([link.href, link.text]);
